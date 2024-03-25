@@ -23,37 +23,32 @@
                         <img src="/images/{{$product->category_id}}.png" class="w-100" alt="{{$product->name}}">
                     </div>
                     <div class="col-md-8">
-
                         <div class="card-body card-product">
-
-
-                                <p><b>Наименование:</b> {{$product->name}}</p>
-                                <p><b>Категория:</b> {{$product->category->name}}</p>
-                                <p><b>В наличии:</b> {{$product->available_quantity}}</p>
-                                <p><b>Характеристики:</b></p>
-
-
+                            <p><b>Наименование:</b> {{$product->name}}</p>
+                            <p><b>Категория:</b> {{$product->category->name}}</p>
+                            <p><b>В наличии:</b> {{$product->available_quantity}}</p>
+                            <p><b>Характеристики:</b></p>
                             <ul>
-                                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</li>
-                                <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                                <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</li>
-                                <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
+                                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                    incididunt ut labore et dolore magna aliqua.
+                                </li>
+                                <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                                    ex ea commodo consequat.
+                                </li>
+                                <li>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                                    fugiat nulla pariatur.
+                                </li>
+                                <li>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                    mollit anim id est laborum.
+                                </li>
                             </ul>
-
                             <hr>
-
-                            </div>
-
+                        </div>
                         <p class="d-flex justify-content-end label-price px-4">Цена: {{round($product->price)}}</p>
                     </div>
                 </div>
             </div>
-
-
-
-
-
-                        @if(Auth::check() && Auth::user()->role_id == 2)
+            @if(Auth::check() && Auth::user()->role_id == 2)
                 @if($product->available_quantity > 0)
                     <form action="{{ route('product.addToCart') }}" method="POST">
                         @csrf
@@ -67,5 +62,5 @@
                 @endif
 
             @endif
-    </div>
+        </div>
 @endsection

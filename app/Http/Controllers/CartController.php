@@ -11,24 +11,22 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function index(){
-
+    public function index()
+    {
         $cart = Cart::query()->paginate(25);
-        return view('order/cart',compact('cart'));
+        return view('order/cart', compact('cart'));
     }
-
     public function create(Request $request)
     {
         $user = Auth::user();
-        $total=0;
+        $total = 0;
         $orderLists = [];
 
-        if($request->has('products')){
+        if ($request->has('products')) {
             foreach ($request->products as $productId => $quantity) {
                 $product = Product::find($productId);
                 var_dump($product->available_quantity, $quantity);
-                if ($product->available_quantity< $quantity) {
-                    // Вернуть ошибку, если товара недостаточно
+                if ($product->available_quantity < $quantity) {
                     return redirect()->back()->with('error', 'Товара нет в наличии на данный момент');
                 }
                 $subtotal = $product->price * $quantity;
@@ -52,6 +50,7 @@ class CartController extends Controller
             $order->user_id = $user->id;
             $order->total = $total;
             $order->save();
+
             foreach ($orderLists as $orderList) {
                 $orderList->order_id = $order->id;
                 $orderList->save();
@@ -67,13 +66,12 @@ class CartController extends Controller
         }
 
         return redirect()->back()->with('error', 'Корзина пуста, оформить заказ невозможно');
-
     }
 
     public function destroy()
     {
-            $cartItems = Cart::where('user_id', Auth::id());
-            $cartItems->forceDelete();
+        $cartItems = Cart::where('user_id', Auth::id());
+        $cartItems->forceDelete();
 
         return redirect()->back()->with('success', 'Корзина очищена');
     }

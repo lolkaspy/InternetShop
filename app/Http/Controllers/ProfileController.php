@@ -10,8 +10,6 @@ class ProfileController extends Controller
 {
     public function index()
     {
-
-       // dd($orders);
         return view('profile');
     }
 }

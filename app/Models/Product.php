@@ -10,8 +10,9 @@ class Product extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
     protected $table = 'products';
-    protected $fillable = ['name','price','available_quantity','category_id','slug'];
+    protected $fillable = ['name', 'price', 'available_quantity', 'category_id', 'slug'];
     protected $hidden = ['deleted_at'];
     public $timestamps = false;
 
@@ -25,9 +26,11 @@ class Product extends Model
         return $this->belongsTo(Cart::class);
     }
 
-    public function order(){
+    public function order()
+    {
         return $this->belongsTo(Order::class);
     }
+
     public function getRouteKeyName()
     {
         return 'slug';

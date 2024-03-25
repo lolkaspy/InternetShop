@@ -12,7 +12,7 @@ class Cart extends Model
     use SoftDeletes;
 
     protected $table = 'carts';
-    protected $fillable = ['user_id', 'product_id','quantity'];
+    protected $fillable = ['user_id', 'product_id', 'quantity'];
     public $timestamps = false;
 
     public function user()

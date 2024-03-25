@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 
 //Catalog
-Route::get('/catalog', [\App\Http\Controllers\CatalogController::class,'index'])->name('catalog.index');
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 //Category
-Route::get('category/{category:slug}', [\App\Http\Controllers\CategoryController::class,'index'])->name('category.index');
+Route::get('category/{category:slug}', [CategoryController::class, 'index'])->name('category.index');
 

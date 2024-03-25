@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends Factory<Product>
  */
 class ProductFactory extends Factory
 {
@@ -21,10 +22,10 @@ class ProductFactory extends Factory
         $slug = str_slug($name);
         return [
             'name' => $name,
-            'price' => round(fake()->randomFloat(2,2000,50000)),
+            'price' => round(fake()->randomFloat(2, 2000, 50000)),
             'available_quantity' => fake()->randomNumber(3),
-            'category_id' => fake()->numberBetween(1,4),
-            'slug'=> $slug,
+            'category_id' => fake()->numberBetween(1, 4),
+            'slug' => $slug,
         ];
     }
 }

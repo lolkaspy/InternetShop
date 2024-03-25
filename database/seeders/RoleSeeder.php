@@ -20,7 +20,7 @@ class RoleSeeder extends Seeder
             [
                 'name' => 'Пользователь',
             ]];
-        foreach ($roleArr as $item){
+        foreach ($roleArr as $item) {
             $role = new Role($item);
             $role->save();
         }

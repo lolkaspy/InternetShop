@@ -10,7 +10,7 @@ class OrderList extends Model
     use HasFactory;
 
     public $timestamps = false;
-    protected $fillable = ['order_id','product_id','quantity','subtotal'];
+    protected $fillable = ['order_id', 'product_id', 'quantity', 'subtotal'];
 
     public function order()
     {

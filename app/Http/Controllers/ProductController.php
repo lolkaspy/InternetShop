@@ -17,19 +17,19 @@ class ProductController extends Controller
         $categories = Category::all();
         $productsQuery = Product::query();
 
-        if($request->filled('name')){
-            $productsQuery->where('name','like',"%{$request->name}%");
+        if ($request->filled('name')) {
+            $productsQuery->where('name', 'like', "%{$request->name}%");
         }
 
-        if($request->filled('low_price')){
-            $productsQuery->where('price','>=',$request->low_price);
+        if ($request->filled('low_price')) {
+            $productsQuery->where('price', '>=', $request->low_price);
         }
 
-        if($request->filled('high_price')){
-            $productsQuery->where('price','<=',$request->high_price);
+        if ($request->filled('high_price')) {
+            $productsQuery->where('price', '<=', $request->high_price);
         }
 
-        if($request->filled('category')){
+        if ($request->filled('category')) {
             $productsQuery->whereHas('category', function (Builder $query) use ($request) {
                 $query->where('slug', '=', $request->category);
             });
@@ -46,13 +46,11 @@ class ProductController extends Controller
 
         $products = $productsQuery->orderBy($sortBy, $sortOrder)->paginate(50);
 
-        //$products = Product::all()->forPage(20,50);
-        return view('products/products', compact('products','categories','productsQuery','minPrice','maxPrice'));
+        return view('products/products', compact('products', 'categories', 'productsQuery', 'minPrice', 'maxPrice'));
     }
 
     public function show(Product $product)
     {
-        //$resp = response()->json($product, options: JSON_UNESCAPED_UNICODE);
         return view('products/product', compact('product'));
     }
 

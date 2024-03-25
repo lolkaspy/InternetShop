@@ -1,32 +1,35 @@
-.category-card{
+.category-card {
     border: 1px solid white;
 
 }
-.category-card:hover{
+
+.category-card:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-.no-border-bottom{
-    border-bottom: 1px solid Transparent!important;
+.no-border-bottom {
+    border-bottom: 1px solid Transparent !important;
 }
-.sum-border-top{
+
+.sum-border-top {
     border-top: 2px solid black;
 
 }
 
-.footer-right{
+.footer-right {
 
     height: 100%;
     width: 50%;
     float: right;
 }
 
-.footer-left{
+.footer-left {
 
     height: 100%;
     width: 50%;
     float: left;
 }
+
 .p-center {
     position: absolute;
     top: 50%;
@@ -34,50 +37,61 @@
     text-indent: 10px;
 
 }
-.sum-border-bottom{
+
+.sum-border-bottom {
     border-bottom: 2px solid black;
 }
+
 h1 {
     text-align: center;
 }
-.btn-primary{
+
+.btn-primary {
     border-color: #3e4551;
 }
-.btn-primary:hover{
-    background-color:rgba(62, 69, 81, 0.8) !important;
+
+.btn-primary:hover {
+    background-color: rgba(62, 69, 81, 0.8) !important;
 
     border-color: #3e4551;
 }
-.navbar-toggler{
-    background-color:white !important;
+
+.navbar-toggler {
+    background-color: white !important;
 }
-.navbar-toggler:hover{
-    background-color:rgba(255, 255, 255, 0.9) !important;
+
+.navbar-toggler:hover {
+    background-color: rgba(255, 255, 255, 0.9) !important;
 }
-.shop-description, .card-product{
+
+.shop-description, .card-product {
     font-size: 14pt;
     text-align: justify;
     text-indent: 20px;
 }
-.bg-black-pastel{
-   background-color: #3e4551;
-}
-.form-check-input:checked{
+
+.bg-black-pastel {
     background-color: #3e4551;
 }
+
+.form-check-input:checked {
+    background-color: #3e4551;
+}
+
 .table, .label-14pt {
     font-size: 14pt;
 }
+
 .label-price {
     font-size: 24pt;
 }
+
 hr {
 
     border: 2px solid #3e4551;
 }
 
-.pagination > li > a
-{
+.pagination > li > a {
     background-color: white;
     color: #3e4551;
 }
@@ -218,7 +232,7 @@ hr {
     color: #999999;
 }
 
-.page-link.active, .active>.page-link {
+.page-link.active, .active > .page-link {
     z-index: 3;
     color: white;
     background-color: #3e4551;

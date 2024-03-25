@@ -12,22 +12,23 @@ use Illuminate\Support\Str;
 class UserSeeder extends Seeder
 {
     protected static ?string $password;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-       User::factory(15)->create();
-       //Отдельная запись для админа вне фабрики
-       $adminRecord = [
+        User::factory(15)->create();
+        //Отдельная запись для админа вне фабрики
+        $adminRecord = [
             'name' => "admin",
             'email' => "admin@a",
             'password' => static::$password ??= Hash::make('admin'),
             'remember_token' => Str::random(10),
             'balance' => null,
-            'role_id'=> 1];
-       $user = new User($adminRecord);
-       $user->save();
+            'role_id' => 1];
+        $user = new User($adminRecord);
+        $user->save();
 
     }
 }
