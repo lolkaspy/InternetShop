@@ -17,7 +17,6 @@ class OrderController extends Controller
             $ordersQuery->whereHas('orderLists.product', function (Builder $query) use ($request) {
                 $query->where('name', 'like', "%{$request->name}%");
             });
-
         }
 
         if ($request->filled('state')) {
