@@ -6,45 +6,19 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Builder;
-
+use App\Services\Order\OrderService;
 class OrderController extends Controller
 {
+    private $orderService;
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     public function index(Request $request)
     {
         $ordersQuery = Order::query()->where('user_id', Auth::id());
-
-        if ($request->filled('name')) {
-            $ordersQuery->whereHas('orderLists.product', function (Builder $query) use ($request) {
-                $query->where('name', 'like', "%{$request->name}%");
-            });
-        }
-
-        if ($request->filled('state')) {
-            $ordersQuery->where('state', '=', $request->state);
-        }
-
-        if ($request->filled('low_total')) {
-            $ordersQuery->where('total', '>=', $request->low_total);
-        }
-
-        if ($request->filled('high_total')) {
-            $ordersQuery->where('total', '<=', $request->high_total);
-        }
-
-        if ($request->filled('created_at')) {
-            $ordersQuery->whereDate('created_at', '=', $request->created_at);
-        }
-
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'asc');
-        $minTotalQuery = clone $ordersQuery;
-        $maxTotalQuery = clone $ordersQuery;
-
-        $minTotal = $minTotalQuery->min('total');
-        $maxTotal = $maxTotalQuery->max('total');
-
-        $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(25);
-        return view('order/orders', compact('orders', 'minTotal', 'maxTotal'));
+        $this->orderService->applyFilters($ordersQuery, $request);
+        return view('order/orders', $this->orderService->getOrderData($ordersQuery, $request));
     }
 
     public function cancelOrder($orderId)
