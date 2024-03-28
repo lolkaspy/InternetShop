@@ -16,7 +16,7 @@
     DB_PASSWORD=
 4. Введите **npm install**
 5. Введите **npm run build** для отображения CSS-стилей
-6. Введите последовательно **php artisan generate:key** и **php artisan config:cache**   
+6. Введите последовательно **php artisan key:generate** и **php artisan config:cache**   
 7. В терминале проекта напишите команду: **php artisan migrate --seed**
 8. Следом напишите команду **php artisan serve**
 9. Откройте сайт по появившемуся адресу
@@ -33,3 +33,5 @@
 5. Версия PHP - **8.1.2**
 
 6. Версия Laravel - **10.48.2**
+
+7. Версия Ubuntu - **22.04.4 LTS**
