@@ -12,7 +12,7 @@ class AdminController extends Controller
     {
         $this->orderService = $orderService;
     }
-    public function __invoke(Request $request)
+    public function index(Request $request)
     {
         $ordersQuery = Order::query();
 

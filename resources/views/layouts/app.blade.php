@@ -18,7 +18,7 @@
 <div id="app">
     <nav class="navbar navbar-expand-md navbar-light shadow-sm bg-black-pastel sticky-top">
         <div class="container">
-            <a class="navbar-brand text-white" href="{{route('main.index')}}">
+            <a class="navbar-brand text-white" href="{{route('main')}}">
                 Главная</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -28,7 +28,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="{{route('catalog.index')}}">Каталог</a>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{route('catalog')}}">Каталог</a>
                     </li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{route('products.index')}}">Все
                             товары</a></li>
@@ -65,12 +65,12 @@
                         @endif
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-white"
-                               href="{{route('profile.index')}}" role="button" data-bs-toggle="dropdown"
+                               href="{{route('profile')}}" role="button" data-bs-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
                             <div class="dropdown-menu dropdown-menu-end text-white" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{{ route('profile.index') }}">
+                                <a class="dropdown-item" href="{{ route('profile') }}">
                                     Личный кабинет
                                 </a>
                                 @if(Auth::check() && Auth::user()->role_id == 2)

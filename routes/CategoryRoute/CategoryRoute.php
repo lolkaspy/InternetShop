@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //Catalog
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::get('/catalog', CatalogController::class)->name('catalog');
 
 //Category
 Route::get('category/{category:slug}', [CategoryController::class, 'index'])->name('category.index');

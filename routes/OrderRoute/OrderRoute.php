@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderListController;
 use Illuminate\Support\Facades\Route;
 
 //Order
-Route::get('/admin/orders', AdminController::class)->name('orders')
+Route::get('/admin/orders', [AdminController::class,'index'])->name('orders')
     ->middleware('admin');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{order_id}', [OrderListController::class, 'show'])

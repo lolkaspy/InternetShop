@@ -3,7 +3,7 @@
     <hr>
     <div><h1>Каталог</h1></div>
     <hr>
-    <div><h2>Выберите категорию товара</h2></div>
+    <div class="text-center"><h2>Выберите категорию товара</h2></div>
     <div class="py-3 py-md-5 bg-black-pastel">
         <div class="container">
             <div class="row">

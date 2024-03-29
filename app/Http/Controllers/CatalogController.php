@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class CatalogController extends Controller
 {
-    public function index()
+    public function __invoke()
     {
         $categories = Category::all();
         return view('catalog', compact('categories'));
