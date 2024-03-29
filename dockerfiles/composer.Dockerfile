@@ -1,4 +1,4 @@
-COPY --from=composer:2.2.6 /usr/bin/composer /usr/local/bin/composer
+FROM composer:2.2.6
 
 WORKDIR /var/www/shop
 
