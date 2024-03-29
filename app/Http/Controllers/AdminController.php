@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 use App\Services\Order\OrderService;
 use App\Models\Order;
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     private $orderService;
-
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;

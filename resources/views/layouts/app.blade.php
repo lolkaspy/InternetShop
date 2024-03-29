@@ -60,8 +60,7 @@
                         @if(Auth::check() && Auth::user()->role_id == 2)
                             <li class="nav-item">
                                 <a class="text-white nav-link"
-                                   href="{{route('cart.index')}}">Корзина({{Cart::where('user_id', Auth::id())->count()}}
-                                    )</a>
+                                   href="{{route('cart.index')}}">Корзина({{Cart::where('user_id', Auth::id())->count()}})</a>
                             </li>
                         @endif
                         <li class="nav-item dropdown">

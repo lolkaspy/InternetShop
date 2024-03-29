@@ -2,6 +2,7 @@
 
 namespace App\Services\Order;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -54,5 +55,64 @@ class OrderService
         $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(50);
 
         return compact('orders', 'minTotal', 'maxTotal');
+    }
+
+    public function cancelOrder($order)
+    {
+        if ($order->state == 1 || $order->state == -1) {
+            return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
+        }
+
+        $user = $order->user;
+        $user->balance += $order->total;
+        $user->save();
+
+        foreach ($order->orderLists as $orderList) {
+            $product = $orderList->product;
+            $product->available_quantity += $orderList->quantity;
+            $product->save();
+        }
+
+        // Обновить статус заказа
+        $order->state = -1;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Заказ успешно отменен');
+    }
+
+    public function updateOrderState(Request $request, $order)
+    {
+        $oldState = $order->state;
+        $newState = $request->state;
+
+        if ($newState == -1 && $oldState != -1) {
+
+            $user = $order->user;
+            $user->balance += $order->total;
+            $user->save();
+
+            foreach ($order->orderLists as $orderList) {
+                $product = $orderList->product;
+                $product->available_quantity += $orderList->quantity;
+                $product->save();
+            }
+
+        } elseif (($newState == 0 || $newState == 1) && $oldState == -1) {
+
+            $user = $order->user;
+            $user->balance -= $order->total;
+            $user->save();
+
+            foreach ($order->orderLists as $orderList) {
+                $product = $orderList->product;
+                $product->available_quantity -= $orderList->quantity;
+                $product->save();
+            }
+        }
+
+        $order->state = $newState;
+        $order->save();
+
+        return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
     }
 }

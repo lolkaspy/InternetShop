@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 //роуты для категорий
 include('CategoryRoute/CategoryRoute.php');
-//роуты для продуктов
+//роуты для товаров
 include('ProductRoute/ProductRoute.php');
 //роуты для заказов
 include('OrderRoute/OrderRoute.php');
