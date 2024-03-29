@@ -28,7 +28,6 @@ services:
       MYSQL_USER: '${DB_USERNAME}'
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
-
   composer:
     build:
       context: dockerfiles
@@ -42,7 +41,6 @@ services:
     volumes:
       - ./:/var/www/shop
     entrypoint: ["php", "/var/www/shop/artisan"]
-
   npm:
     image: "node:20-alpine"
     working_dir: /var/www/shop
