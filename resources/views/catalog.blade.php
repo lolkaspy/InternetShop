@@ -8,7 +8,6 @@
         <div class="container">
             <div class="row">
                 @foreach($categories as $category)
-
                     <div class="col-6 col-md-3">
                         <div class="category-card">
                             <a class="nav-link text-white" href="category/{{$category->slug}}">

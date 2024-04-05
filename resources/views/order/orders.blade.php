@@ -19,9 +19,9 @@
                 <label for="state" class="label-14pt">Статус</label>
                 <select id="state" name="state" class="form-control form-select">
                     <option value="" selected disabled hidden></option>
-                    <option value="-1" {{ (request()->state == '-1') ? 'selected' : '' }}>Отменённый</option>
-                    <option value="0" {{ (request()->state == '0') ? 'selected' : '' }}>Новый</option>
-                    <option value="1" {{ (request()->state == '1') ? 'selected' : '' }}>Подтверждённый</option>
+                    <option value="{{\App\Enums\StateEnum::Cancelled}}" {{ (request()->state == \App\Enums\StateEnum::Cancelled) ? 'selected' : '' }}>Отменённый</option>
+                    <option value="{{\App\Enums\StateEnum::New}}" {{ (request()->state == \App\Enums\StateEnum::New) ? 'selected' : '' }}>Новый</option>
+                    <option value="{{\App\Enums\StateEnum::Approved}}" {{ (request()->state == \App\Enums\StateEnum::Approved) ? 'selected' : '' }}>Подтверждённый</option>
                 </select>
             </div>
             <div class="col-sm-2">

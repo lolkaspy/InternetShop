@@ -20,7 +20,7 @@ class CartController extends Controller
     }
     public function index()
     {
-        $cart = Cart::query()->paginate(25);
+        $cart = Cart::query()->where('user_id',Auth::id())->paginate(25);
         return view('order/cart', compact('cart'));
     }
     public function create(Request $request)

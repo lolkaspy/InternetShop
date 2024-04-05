@@ -68,8 +68,8 @@ class ProductService
         $minPriceQuery = clone $productsQuery;
         $maxPriceQuery = clone $productsQuery;
 
-        $minPrice = $minPriceQuery->min('price');
-        $maxPrice = $maxPriceQuery->max('price');
+        $minPrice = round($minPriceQuery->min('price'));
+        $maxPrice = round($maxPriceQuery->max('price'));
 
         $sortBy = $request->get('sort_by', 'id');
         $sortOrder = $request->get('sort_order', 'asc');

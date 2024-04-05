@@ -31,8 +31,8 @@ class OrderListService
         $minOrderListQuery = clone $orderListQuery;
         $maxOrderListQuery = clone $orderListQuery;
 
-        $minSubtotal = $minOrderListQuery->min('subtotal');
-        $maxSubtotal = $maxOrderListQuery->max('subtotal');
+        $minSubtotal = round($minOrderListQuery->min('subtotal'));
+        $maxSubtotal = round($maxOrderListQuery->max('subtotal'));
 
         $sortBy = $request->get('sort_by', 'product_id');
         $sortOrder = $request->get('sort_order', 'asc');

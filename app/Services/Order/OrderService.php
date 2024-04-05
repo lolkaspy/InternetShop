@@ -2,6 +2,7 @@
 
 namespace App\Services\Order;
 
+use App\Enums\StateEnum;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -49,8 +50,8 @@ class OrderService
         $minTotalQuery = clone $ordersQuery;
         $maxTotalQuery = clone $ordersQuery;
 
-        $minTotal = $minTotalQuery->min('total');
-        $maxTotal = $maxTotalQuery->max('total');
+        $minTotal = round($minTotalQuery->min('total'));
+        $maxTotal = round($maxTotalQuery->max('total'));
 
         $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(50);
 
@@ -59,7 +60,7 @@ class OrderService
 
     public function cancelOrder($order)
     {
-        if ($order->state == 1 || $order->state == -1) {
+        if ($order->state == StateEnum::Approved || $order->state == StateEnum::Cancelled) {
             return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
         }
 
@@ -74,7 +75,7 @@ class OrderService
         }
 
         // Обновить статус заказа
-        $order->state = -1;
+        $order->state = StateEnum::Cancelled;
         $order->save();
 
         return redirect()->back()->with('success', 'Заказ успешно отменен');
@@ -85,7 +86,7 @@ class OrderService
         $oldState = $order->state;
         $newState = $request->state;
 
-        if ($newState == -1 && $oldState != -1) {
+        if ($newState == StateEnum::Cancelled && $oldState != StateEnum::Cancelled) {
 
             $user = $order->user;
             $user->balance += $order->total;
@@ -97,7 +98,7 @@ class OrderService
                 $product->save();
             }
 
-        } elseif (($newState == 0 || $newState == 1) && $oldState == -1) {
+        } elseif (($newState == StateEnum::New || $newState == StateEnum::Approved) && $oldState == StateEnum::Cancelled) {
 
             $user = $order->user;
             $user->balance -= $order->total;
