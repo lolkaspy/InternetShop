@@ -60,7 +60,7 @@ class OrderService
 
     public function cancelOrder($order)
     {
-        if ($order->state == StateEnum::Approved || $order->state == StateEnum::Cancelled) {
+        if ($order->state == StateEnum::Approved->value || $order->state == StateEnum::Cancelled->value) {
             return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
         }
 
@@ -75,7 +75,7 @@ class OrderService
         }
 
         // Обновить статус заказа
-        $order->state = StateEnum::Cancelled;
+        $order->state = StateEnum::Cancelled->value;
         $order->save();
 
         return redirect()->back()->with('success', 'Заказ успешно отменен');
@@ -84,9 +84,12 @@ class OrderService
     public function updateOrderState(Request $request, $order)
     {
         $oldState = $order->state;
-        $newState = $request->state;
+        $newState = $request->state_change;
 
-        if ($newState == StateEnum::Cancelled && $oldState != StateEnum::Cancelled) {
+        //dd("newState - ".$newState."\nCancelled - ".StateEnum::Cancelled->value."\nApproved - ".StateEnum::Approved->value
+        //."\nNew - ".StateEnum::New->value."\noldState - ".$oldState);
+
+        if ($newState == StateEnum::Cancelled->value && $oldState != StateEnum::Cancelled->value) {
 
             $user = $order->user;
             $user->balance += $order->total;
@@ -98,7 +101,7 @@ class OrderService
                 $product->save();
             }
 
-        } elseif (($newState == StateEnum::New || $newState == StateEnum::Approved) && $oldState == StateEnum::Cancelled) {
+        } elseif (($newState == StateEnum::New->value || $newState == StateEnum::Approved->value) && $oldState == StateEnum::Cancelled->value) {
 
             $user = $order->user;
             $user->balance -= $order->total;

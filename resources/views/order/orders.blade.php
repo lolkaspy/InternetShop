@@ -19,9 +19,9 @@
                 <label for="state" class="label-14pt">Статус</label>
                 <select id="state" name="state" class="form-control form-select">
                     <option value="" selected disabled hidden></option>
-                    <option value="{{\App\Enums\StateEnum::Cancelled}}" {{ (request()->state == \App\Enums\StateEnum::Cancelled) ? 'selected' : '' }}>Отменённый</option>
-                    <option value="{{\App\Enums\StateEnum::New}}" {{ (request()->state == \App\Enums\StateEnum::New) ? 'selected' : '' }}>Новый</option>
-                    <option value="{{\App\Enums\StateEnum::Approved}}" {{ (request()->state == \App\Enums\StateEnum::Approved) ? 'selected' : '' }}>Подтверждённый</option>
+                    <option value="{{\App\Enums\StateEnum::Cancelled->value}}" {{ (request()->state == \App\Enums\StateEnum::Cancelled) ? 'selected' : '' }}>Отменённый</option>
+                    <option value="{{\App\Enums\StateEnum::New->value}}" {{ (request()->state == \App\Enums\StateEnum::New) ? 'selected' : '' }}>Новый</option>
+                    <option value="{{\App\Enums\StateEnum::Approved->value}}" {{ (request()->state == \App\Enums\StateEnum::Approved) ? 'selected' : '' }}>Подтверждённый</option>
                 </select>
             </div>
             <div class="col-sm-2">
@@ -150,10 +150,10 @@
                                 @csrf
                                 <div class="d-flex justify-content-between">
                                     <select name="state_change" id="state_change" class="form-control form-select w-50">
-                                        <option value="-1" {{ $order->state == -1 ? 'selected' : '' }}>Отменённый
+                                        <option value="{{\App\Enums\StateEnum::Cancelled}}" {{ $order->state == \App\Enums\StateEnum::Cancelled->value ? 'selected' : '' }}>Отменённый
                                         </option>
-                                        <option value="0" {{ $order->state == 0 ? 'selected' : '' }}>Новый</option>
-                                        <option value="1" {{ $order->state == 1 ? 'selected' : '' }}>Подтверждённый
+                                        <option value="{{\App\Enums\StateEnum::New}}" {{ $order->state == \App\Enums\StateEnum::New->value ? 'selected' : '' }}>Новый</option>
+                                        <option value="{{\App\Enums\StateEnum::Approved}}" {{ $order->state == \App\Enums\StateEnum::Approved->value ? 'selected' : '' }}>Подтверждённый
                                         </option>
                                     </select>
                                     <button type="submit" class="btn btn-primary bg-black-pastel text-white">Обновить
