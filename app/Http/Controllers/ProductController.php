@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
@@ -19,7 +20,7 @@ class ProductController extends Controller
     {
         $this->productService = $productService;
     }
-    public function index(Request $request)
+    public function index(ProductRequest $request)
     {
         $categories = Category::all();
         $productsQuery = Product::query();
@@ -35,7 +36,7 @@ class ProductController extends Controller
         return view('products/product', compact('product'));
     }
 
-    public function addToCart(Request $request)
+    public function addToCart(ProductRequest $request)
     {
         return $this->productService->addToCart($request);
     }

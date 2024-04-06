@@ -3,13 +3,14 @@
 namespace App\Services\Order;
 
 use App\Enums\StateEnum;
+use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class OrderService
 {
-    public function applyFilters(Builder $ordersQuery, Request $request)
+    public function applyFilters(Builder $ordersQuery, OrderRequest $request)
     {
         if ($request->filled('name')) {
             $ordersQuery->whereHas('orderLists.product', function (Builder $query) use ($request) {
@@ -43,7 +44,7 @@ class OrderService
         return $ordersQuery;
     }
 
-    public function getOrderData(Builder $ordersQuery, Request $request)
+    public function getOrderData(Builder $ordersQuery, OrderRequest $request)
     {
         $sortBy = $request->get('sort_by', 'id');
         $sortOrder = $request->get('sort_order', 'asc');
@@ -81,13 +82,10 @@ class OrderService
         return redirect()->back()->with('success', 'Заказ успешно отменен');
     }
 
-    public function updateOrderState(Request $request, $order)
+    public function updateOrderState(OrderRequest $request, $order)
     {
         $oldState = $order->state;
         $newState = $request->state_change;
-
-        //dd("newState - ".$newState."\nCancelled - ".StateEnum::Cancelled->value."\nApproved - ".StateEnum::Approved->value
-        //."\nNew - ".StateEnum::New->value."\noldState - ".$oldState);
 
         if ($newState == StateEnum::Cancelled->value && $oldState != StateEnum::Cancelled->value) {
 

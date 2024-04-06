@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\OrderRequest;
 use App\Services\Order\OrderService;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class OrderController extends Controller
     {
         $this->orderService = $orderService;
     }
-    public function index(Request $request)
+    public function index(OrderRequest $request)
     {
         $ordersQuery = Order::query()->where('user_id', Auth::id());
 
@@ -28,7 +29,7 @@ class OrderController extends Controller
         return $this->orderService->cancelOrder($order);
     }
 
-    public function updateOrderState(Request $request, $orderId)
+    public function updateOrderState(OrderRequest $request, $orderId)
     {
         $order = Order::find($orderId);
         return $this->orderService->updateOrderState($request, $order);

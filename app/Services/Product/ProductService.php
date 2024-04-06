@@ -2,6 +2,7 @@
 
 namespace App\Services\Product;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductService
 {
-    public function addToCart(Request $request)
+    public function addToCart(ProductRequest $request)
     {
         $productId = $request->get('product_id');
         $product = Product::find($productId);
@@ -40,7 +41,7 @@ class ProductService
         return redirect()->back()->with('success', 'Товар успешно добавлен в корзину');
     }
 
-    public function applyFilters(Builder $productsQuery, Request $request)
+    public function applyFilters(Builder $productsQuery, ProductRequest $request)
     {
         if ($request->filled('name')) {
             $productsQuery->where('name', 'like', "%{$request->name}%");
@@ -63,7 +64,7 @@ class ProductService
         return $productsQuery;
     }
 
-    public function getProductsData(Builder $productsQuery, Request $request)
+    public function getProductsData(Builder $productsQuery, ProductRequest $request)
     {
         $minPriceQuery = clone $productsQuery;
         $maxPriceQuery = clone $productsQuery;

@@ -6,6 +6,7 @@
     @endphp
     <div class="container">
         <hr>
+        @if($orderList->first() !== null)
         <h1>Позиции заказа от {{date_format($orderList->first()->order->created_at,"d.m.Y")}}
             @if(Auth::check() && Auth::user()->role_id == 1)
                 пользователя {{$orderList->first()->order->user->name}}
@@ -90,4 +91,7 @@
             <th class="sum-border-bottom">{{$total}}</th>
         </tr>
     </table>
+    @else
+        <h1>Товар не найден</h1>
+    @endif
 @endsection

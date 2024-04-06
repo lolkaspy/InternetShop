@@ -2,13 +2,14 @@
 
 namespace App\Services\OrderList;
 
+use App\Http\Requests\OrderListRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class OrderListService
 {
-    public function applyFilters(Builder $orderListQuery, Request $request)
+    public function applyFilters(Builder $orderListQuery, OrderListRequest $request)
     {
         if ($request->filled('name')) {
             $orderListQuery->whereHas('product', function ($query) use ($request) {
@@ -26,7 +27,7 @@ class OrderListService
         return $orderListQuery;
     }
 
-    public function getOrderListData(Builder $orderListQuery, Request $request)
+    public function getOrderListData(Builder $orderListQuery, OrderListRequest $request)
     {
         $minOrderListQuery = clone $orderListQuery;
         $maxOrderListQuery = clone $orderListQuery;
@@ -38,7 +39,6 @@ class OrderListService
         $sortOrder = $request->get('sort_order', 'asc');
 
         $orderList = $orderListQuery->orderBy($sortBy, $sortOrder)->paginate(25);
-
         return compact('orderList', 'minSubtotal', 'maxSubtotal');
     }
 

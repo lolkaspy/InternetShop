@@ -27,12 +27,12 @@
             <div class="col-sm-2">
                 <label for="low_total" class="label-14pt">Сумма от</label>
                 <input id="low_total" name="low_total" type="number" min="0" class="form-control"
-                       value="{{request()->low_total}}" placeholder="{{round($minTotal)}}"/>
+                       value="{{request()->low_total}}" placeholder="{{$minTotal}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="high_total" class="label-14pt">до</label>
                 <input id="high_total" name="high_total" type="number" min="0" class="form-control"
-                       value="{{request()->high_total}}" placeholder="{{round($maxTotal)}}"/>
+                       value="{{request()->high_total}}" placeholder="{{$maxTotal}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="created_at" class="label-14pt">Дата</label>
@@ -132,11 +132,11 @@
                     <td>
                         @if(Auth::check() && Auth::user()->role_id == 2)
                             @switch($order->state)
-                                @case(-1)
+                                @case(\App\Enums\StateEnum::Cancelled->value)
                                     Отменённый
                                     @break
 
-                                @case(1)
+                                @case(\App\Enums\StateEnum::Approved->value)
                                     Подтверждённый
                                     @break
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\OrderRequest;
 use App\Services\Order\OrderService;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class AdminController extends Controller
     {
         $this->orderService = $orderService;
     }
-    public function index(Request $request)
+    public function index(OrderRequest $request)
     {
         $ordersQuery = Order::query();
 

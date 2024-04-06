@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 
 use App\Models\Product;
@@ -15,7 +16,7 @@ class CategoryController extends Controller
     {
         $this->categoryService = $categoryService;
     }
-    public function index(Request $request, $category)
+    public function index(CategoryRequest $request, $category)
     {
         $currentCategory = Category::where('slug', $category)->first();
         $productsQuery = Product::query()->where('category_id', $currentCategory->id);

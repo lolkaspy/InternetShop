@@ -2,13 +2,15 @@
 
 namespace App\Services\Category;
 
+use App\Http\Requests\CategoryRequest;
+use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class CategoryService
 {
-    public function applyFilters(Builder $productsQuery, Request $request)
+    public function applyFilters(Builder $productsQuery, CategoryRequest $request)
     {
         if ($request->filled('name')) {
             $productsQuery->where('name', 'like', "%{$request->name}%");
@@ -25,7 +27,7 @@ class CategoryService
         return $productsQuery;
     }
 
-    public function getCategoryData(Builder $productsQuery, Request $request)
+    public function getCategoryData(Builder $productsQuery, CategoryRequest $request)
     {
         $minPriceQuery = clone $productsQuery;
         $maxPriceQuery = clone $productsQuery;
