@@ -46,6 +46,9 @@ class OrderService
 
     public function getOrderData(Builder $ordersQuery, OrderRequest $request)
     {
+        //передаём перечисление на view
+        $stateEnum = StateEnum::class;
+
         $sortBy = $request->get('sort_by', 'id');
         $sortOrder = $request->get('sort_order', 'asc');
         $minTotalQuery = clone $ordersQuery;
@@ -56,7 +59,7 @@ class OrderService
 
         $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(50);
 
-        return compact('orders', 'minTotal', 'maxTotal');
+        return compact('orders', 'minTotal', 'maxTotal','stateEnum');
     }
 
     public function cancelOrder($order)

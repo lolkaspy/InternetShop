@@ -19,9 +19,9 @@
                 <label for="state" class="label-14pt">Статус</label>
                 <select id="state" name="state" class="form-control form-select">
                     <option value="" selected disabled hidden></option>
-                    <option value="{{\App\Enums\StateEnum::Cancelled->value}}" {{ (request()->state == \App\Enums\StateEnum::Cancelled) ? 'selected' : '' }}>Отменённый</option>
-                    <option value="{{\App\Enums\StateEnum::New->value}}" {{ (request()->state == \App\Enums\StateEnum::New) ? 'selected' : '' }}>Новый</option>
-                    <option value="{{\App\Enums\StateEnum::Approved->value}}" {{ (request()->state == \App\Enums\StateEnum::Approved) ? 'selected' : '' }}>Подтверждённый</option>
+                    <option value="{{$stateEnum::Cancelled->value}}" {{ (request()->state == $stateEnum::Cancelled) ? 'selected' : '' }}>Отменённый</option>
+                    <option value="{{$stateEnum::New->value}}" {{ (request()->state == $stateEnum::New) ? 'selected' : '' }}>Новый</option>
+                    <option value="{{$stateEnum::Approved->value}}" {{ (request()->state == $stateEnum::Approved) ? 'selected' : '' }}>Подтверждённый</option>
                 </select>
             </div>
             <div class="col-sm-2">
@@ -132,11 +132,11 @@
                     <td>
                         @if(Auth::check() && Auth::user()->role_id == 2)
                             @switch($order->state)
-                                @case(\App\Enums\StateEnum::Cancelled->value)
+                                @case($stateEnum::Cancelled->value)
                                     Отменённый
                                     @break
 
-                                @case(\App\Enums\StateEnum::Approved->value)
+                                @case($stateEnum::Approved->value)
                                     Подтверждённый
                                     @break
 
@@ -150,10 +150,10 @@
                                 @csrf
                                 <div class="d-flex justify-content-between">
                                     <select name="state_change" id="state_change" class="form-control form-select w-50">
-                                        <option value="{{\App\Enums\StateEnum::Cancelled}}" {{ $order->state == \App\Enums\StateEnum::Cancelled->value ? 'selected' : '' }}>Отменённый
+                                        <option value="{{$stateEnum::Cancelled}}" {{ $order->state == $stateEnum::Cancelled->value ? 'selected' : '' }}>Отменённый
                                         </option>
-                                        <option value="{{\App\Enums\StateEnum::New}}" {{ $order->state == \App\Enums\StateEnum::New->value ? 'selected' : '' }}>Новый</option>
-                                        <option value="{{\App\Enums\StateEnum::Approved}}" {{ $order->state == \App\Enums\StateEnum::Approved->value ? 'selected' : '' }}>Подтверждённый
+                                        <option value="{{$stateEnum::New}}" {{ $order->state == $stateEnum::New->value ? 'selected' : '' }}>Новый</option>
+                                        <option value="{{$stateEnum::Approved}}" {{ $order->state == $stateEnum::Approved->value ? 'selected' : '' }}>Подтверждённый
                                         </option>
                                     </select>
                                     <button type="submit" class="btn btn-primary bg-black-pastel text-white">Обновить
