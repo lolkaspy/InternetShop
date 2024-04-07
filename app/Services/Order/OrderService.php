@@ -8,6 +8,7 @@ use App\Http\Requests\OrderRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 class OrderService implements FilterInterface
 {
@@ -68,6 +69,7 @@ class OrderService implements FilterInterface
         if ($order->state == StateEnum::Approved->value || $order->state == StateEnum::Cancelled->value) {
             return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
         }
+        DB::transaction(function () use ($order): void {
 
         $user = $order->user;
         $user->balance += $order->total;
@@ -83,6 +85,7 @@ class OrderService implements FilterInterface
         $order->state = StateEnum::Cancelled->value;
         $order->save();
 
+        });
         return redirect()->back()->with('success', 'Заказ успешно отменен');
     }
 
@@ -90,7 +93,7 @@ class OrderService implements FilterInterface
     {
         $oldState = $order->state;
         $newState = $request->state_change;
-
+        DB::transaction(function () use ($oldState, $newState, $order, $request): void {
         if ($newState == StateEnum::Cancelled->value && $oldState != StateEnum::Cancelled->value) {
 
             $user = $order->user;
@@ -119,6 +122,7 @@ class OrderService implements FilterInterface
         $order->state = $newState;
         $order->save();
 
+        });
         return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
     }
 }

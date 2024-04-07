@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductService implements FilterInterface
 {
@@ -20,21 +21,25 @@ class ProductService implements FilterInterface
 
         $cart = Cart::where('product_id', $productId)->where('user_id', Auth::id())->first();
 
+
+
         if ($cart) {
             if ($cart->quantity < $product->available_quantity) {
+                DB::transaction(function () use ($product, $cart, $request): void {
                 $cart->quantity += 1;
                 $cart->save();
+                });
             } else {
-
                 return redirect()->back()->with('error', 'Вы не можете добавить больше этого товара в корзину');
             }
         } else {
             if ($product->available_quantity > 0) {
+                DB::transaction(function () use ($productId, $request): void {
                 Cart::create([
                     'product_id' => $productId,
                     'user_id' => Auth::id(),
                     'quantity' => 1,
-                ]);
+                ]);});
             } else {
                 return redirect()->back()->with('error', 'Этот товар в настоящее время недоступен');
             }

@@ -21,7 +21,7 @@ class CartService
         if ($request->has('products')) {
             foreach ($request->products as $productId => $quantity) {
                 $product = Product::find($productId);
-                var_dump($product->available_quantity, $quantity);
+
                 if ($product->available_quantity < $quantity) {
                     return redirect()->back()->with('error', 'Товара нет в наличии на данный момент');
                 }
