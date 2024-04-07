@@ -7,7 +7,9 @@ use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\Product\ProductService;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +22,7 @@ class ProductController extends Controller
     {
         $this->productService = $productService;
     }
-    public function index(ProductRequest $request)
+    public function index(ProductRequest $request): Renderable
     {
         $categories = Category::all();
         $productsQuery = Product::query();
@@ -31,12 +33,12 @@ class ProductController extends Controller
             $this->productService->getProductsData($productsQuery,$request));
     }
 
-    public function show(Product $product)
+    public function show(Product $product): Renderable
     {
         return view('products/product', compact('product'));
     }
 
-    public function addToCart(ProductRequest $request)
+    public function addToCart(ProductRequest $request): RedirectResponse
     {
         return $this->productService->addToCart($request);
     }

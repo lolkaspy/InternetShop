@@ -8,9 +8,9 @@
             <div>
                 <p class="label-14pt">Имя: {{Auth::user()->name}}</p>
                 <p class="label-14pt">Email: {{Auth::user()->email}}</p>
-                @if(Auth::check() && Auth::user()->role_id == 2)
+                @user
                     <p class="label-14pt">Баланс: {{Auth::user()->balance}}</p>
-                @endif
+                @enduser
                 <p class="label-14pt">Дата регистрации: {{date_format(Auth::user()->created_at, "d.m.Y")}}</p>
             </div>
         </div>

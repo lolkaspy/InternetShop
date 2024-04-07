@@ -5,11 +5,12 @@
         <div><h1>Заказы</h1></div>
         <hr>
         <form method="GET" class="row g-3 d-flex justify-content-center" action="
-    @if(Auth::check() && Auth::user()->role_id == 1)
+    @admin
     {{route('orders')}}
-    @else
+    @endadmin
+    @user
     {{route('orders.index')}}
-    @endif
+    @enduser
     ">
             <div class="col-sm-3">
                 <label for="name" class="label-14pt">Наименование товара в заказе</label>
@@ -39,12 +40,12 @@
                 <input id="created_at" name="created_at" type="date" class="form-control"
                        value="{{request()->created_at}}"/>
             </div>
-            @if(Auth::check() && Auth::user()->role_id == 1)
+            @admin
                 <div class="col-sm-3">
                     <label for="user" class="label-14pt">Пользователь</label>
                     <input id="user" name="user" type="text" class="form-control" value="{{request()->user}}"/>
                 </div>
-            @endif
+            @endadmin
             <div class="col-sm-2">
                 <label for="sort_by" class="label-14pt">Сортировка</label>
                 <select name="sort_by" id="sort_by" class="form-control form-select">
@@ -52,10 +53,10 @@
                     <option value="state" {{ (request()->sort_by == 'state') ? 'selected' : '' }}>Статус</option>
                     <option value="total" {{ (request()->sort_by == 'total') ? 'selected' : '' }}>Сумма</option>
                     <option value="date" {{ (request()->sort_by == 'date') ? 'selected' : '' }}>Дата</option>
-                    @if(Auth::check() && Auth::user()->role_id == 1)
+                    @admin
                         <option value="user" {{ (request()->sort_by == 'user') ? 'selected' : '' }}>Пользователь
                         </option>
-                    @endif
+                    @endadmin
                 </select>
             </div>
             <div class="col-sm-2">
@@ -67,17 +68,17 @@
             </div>
             <div class="row g-3 d-flex justify-content-center">
                 <div class="col-sm-2">
-                    @if(Auth::check() && Auth::user()->role_id == 1)
+                    @admin
                         <a href="{{route('orders')}}" class="btn btn-primary bg-black-pastel text-white form-control ">
                             {{ __('Сбросить фильтры') }}
                         </a>
-                    @endif
-                    @if(Auth::check() && Auth::user()->role_id == 2)
+                    @endadmin
+                    @user
                         <a href="{{route('orders.index')}}"
                            class="btn btn-primary bg-black-pastel text-white form-control ">
                             {{ __('Сбросить фильтры') }}
                         </a>
-                    @endif
+                    @enduser
                 </div>
                 <div class="col-sm-2">
                     <button type="submit" class="btn btn-primary bg-black-pastel text-white form-control ">
@@ -112,12 +113,12 @@
                 <th>Сумма заказа</th>
                 <th>Дата заказа</th>
                 <th><label for="state_change">Статус</label></th>
-                @if(Auth::check() && Auth::user()->role_id == 1)
+                @admin
                     <th>Пользователь</th>
-                @endif
-                @if(Auth::check() && Auth::user()->role_id == 2)
+                @endadmin
+                @user
                     <th></th>
-                @endif
+                @enduser
             </tr>
             @foreach($orders as $order)
                 <tr>
@@ -130,7 +131,7 @@
                     <td>{{round($order->total)}}</td>
                     <td>{{date_format($order->created_at, "d.m.Y, H:i")}}</td>
                     <td>
-                        @if(Auth::check() && Auth::user()->role_id == 2)
+                        @user
                             @switch($order->state)
                                 @case($stateEnum::Cancelled->value)
                                     Отменённый
@@ -143,9 +144,9 @@
                                 @default
                                     Новый
                             @endswitch
-                        @endif
+                        @enduser
 
-                        @if(Auth::check() && Auth::user()->role_id == 1)
+                        @admin
                             <form action="{{ route('order.updateState', $order->id) }}" method="POST">
                                 @csrf
                                 <div class="d-flex justify-content-between">
@@ -161,14 +162,15 @@
                                     </button>
                                 </div>
                             </form>
-                        @endif
+                        @endadmin
                     </td>
-                    @if(Auth::check() && Auth::user()->role_id == 1)
+
+                    @admin
                         <td>
                             {{$order->user->name}} ({{$order->user->email}})
                         </td>
-                    @endif
-                    @if(Auth::check() && Auth::user()->role_id == 2)
+                    @endadmin
+                    @user
                         <td>
                             <form action="{{ route('order.cancel', $order->id) }}" method="POST">
                                 @csrf
@@ -177,7 +179,7 @@
                                 </button>
                             </form>
                         </td>
-                    @endif
+                    @enduser
                 </tr>
             @endforeach
         </table>

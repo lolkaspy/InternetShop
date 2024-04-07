@@ -2,32 +2,34 @@
 
 namespace App\Services\OrderList;
 
+use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderListRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class OrderListService
+class OrderListService implements FilterInterface
 {
-    public function applyFilters(Builder $orderListQuery, OrderListRequest $request)
+    public function applyFilters(Builder $query, FormRequest $request): Builder
     {
         if ($request->filled('name')) {
-            $orderListQuery->whereHas('product', function ($query) use ($request) {
-                $query->where('name', 'like', "%{$request->name}%");
+            $query->whereHas('product', function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->name}%");
             });
         }
 
         if ($request->filled('low_subtotal')) {
-            $orderListQuery->where('subtotal', '>=', $request->low_subtotal);
+            $query->where('subtotal', '>=', $request->low_subtotal);
         }
 
         if ($request->filled('high_subtotal')) {
-            $orderListQuery->where('subtotal', '<=', $request->high_subtotal);
+            $query->where('subtotal', '<=', $request->high_subtotal);
         }
-        return $orderListQuery;
+        return $query;
     }
 
-    public function getOrderListData(Builder $orderListQuery, OrderListRequest $request)
+    public function getOrderListData(Builder $orderListQuery, OrderListRequest $request): array
     {
         $minOrderListQuery = clone $orderListQuery;
         $maxOrderListQuery = clone $orderListQuery;

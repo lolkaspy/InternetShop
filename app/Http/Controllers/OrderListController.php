@@ -6,6 +6,7 @@ use App\Http\Requests\OrderListRequest;
 use App\Models\Order;
 use App\Models\OrderList;
 use App\Services\OrderList\OrderListService;
+use Illuminate\Contracts\Support\Renderable;
 use PhpParser\Builder;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,7 @@ class OrderListController extends Controller
     {
         $this->orderListService = $orderListService;
     }
-    public function show(OrderListRequest $request, $order_id)
+    public function show(OrderListRequest $request, $order_id): Renderable
     {
         $orderListQuery = OrderList::query()->where('order_id', $order_id)
             ->leftJoin('products', 'order_lists.product_id', '=', 'products.id')->with('order');

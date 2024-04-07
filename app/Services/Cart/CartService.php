@@ -7,12 +7,13 @@ use App\Models\Order;
 use App\Models\OrderList;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartService
 {
-    public function createOrder(Request $request)
+    public function createOrder(Request $request): RedirectResponse
     {
         $user = Auth::user();
         $total = 0;

@@ -32,13 +32,13 @@
                     </li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{route('products.index')}}">Все
                             товары</a></li>
-                    @if(Auth::check() && Auth::user()->role_id == 1)
+                    @admin
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ route('orders') }}">
                                 Заказы пользователей
                             </a>
                         </li>
-                    @endif
+                    @endadmin
                 </ul>
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
@@ -57,12 +57,12 @@
                             </li>
                         @endif
                     @else
-                        @if(Auth::check() && Auth::user()->role_id == 2)
+                        @user
                             <li class="nav-item">
                                 <a class="text-white nav-link"
                                    href="{{route('cart.index')}}">Корзина({{Cart::where('user_id', Auth::id())->count()}})</a>
                             </li>
-                        @endif
+                        @enduser
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-white"
                                href="{{route('profile')}}" role="button" data-bs-toggle="dropdown"
@@ -73,11 +73,11 @@
                                 <a class="dropdown-item" href="{{ route('profile') }}">
                                     Личный кабинет
                                 </a>
-                                @if(Auth::check() && Auth::user()->role_id == 2)
+                                @user
                                     <a class="dropdown-item" href="{{ route('orders.index') }}">
                                         Заказы
                                     </a>
-                                @endif
+                                @enduser
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

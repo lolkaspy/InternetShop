@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Services\Order\OrderService;
 use App\Models\Order;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -13,7 +14,7 @@ class AdminController extends Controller
     {
         $this->orderService = $orderService;
     }
-    public function index(OrderRequest $request)
+    public function index(OrderRequest $request): Renderable
     {
         $ordersQuery = Order::query();
 

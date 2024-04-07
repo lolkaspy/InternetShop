@@ -71,9 +71,9 @@
                 <th>Цена</th>
                 <th>В наличии</th>
                 <th></th>
-                @if(Auth::check() && Auth::user()->role_id == 2)
+                @user
                     <th></th>
-                @endif
+                @enduser
             </tr>
             @foreach($products as $product)
                 <tr>
@@ -86,7 +86,7 @@
                             <button class="btn btn-primary bg-black-pastel text-white">Посмотреть информацию</button>
                         </a>
                     </td>
-                    @if(Auth::check() && Auth::user()->role_id == 2)
+                    @user
                         <td>
                             @if($product->available_quantity > 0)
                                 <form action="{{ route('product.addToCart') }}" method="POST">
@@ -100,7 +100,7 @@
                                 <p>Товар в настоящее время недоступен</p>
                             @endif
                         </td>
-                    @endif
+                    @enduser
                 </tr>
 
             @endforeach

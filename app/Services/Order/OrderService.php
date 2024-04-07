@@ -3,48 +3,51 @@
 namespace App\Services\Order;
 
 use App\Enums\StateEnum;
+use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderRequest;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class OrderService
+class OrderService implements FilterInterface
 {
-    public function applyFilters(Builder $ordersQuery, OrderRequest $request)
+    public function applyFilters(Builder $query, FormRequest $request): Builder
     {
         if ($request->filled('name')) {
-            $ordersQuery->whereHas('orderLists.product', function (Builder $query) use ($request) {
+            $query->whereHas('orderLists.product', function (Builder $query) use ($request) {
                 $query->where('name', 'like', "%{$request->name}%");
             });
         }
 
         if ($request->filled('state')) {
-            $ordersQuery->where('state', '=', $request->state);
+            $query->where('state', '=', $request->state);
         }
 
         if ($request->filled('low_total')) {
-            $ordersQuery->where('total', '>=', $request->low_total);
+            $query->where('total', '>=', $request->low_total);
         }
 
         if ($request->filled('high_total')) {
-            $ordersQuery->where('total', '<=', $request->high_total);
+            $query->where('total', '<=', $request->high_total);
         }
 
         if ($request->filled('created_at')) {
-            $ordersQuery->whereDate('created_at', '=', $request->created_at);
+            $query->whereDate('created_at', '=', $request->created_at);
         }
 
         if ($request->filled('user')) {
-            $ordersQuery->whereHas('user', function (Builder $query) use ($request) {
+            $query->whereHas('user', function (Builder $query) use ($request) {
                 $query->where('email', 'like', "%{$request->user}%")
                     ->orWhere('name', 'like', "%{$request->user}%");
             });
         }
 
-        return $ordersQuery;
+        return $query;
     }
 
-    public function getOrderData(Builder $ordersQuery, OrderRequest $request)
+    public function getOrderData(Builder $ordersQuery, OrderRequest $request): array
     {
         //передаём перечисление на view
         $stateEnum = StateEnum::class;
@@ -62,7 +65,7 @@ class OrderService
         return compact('orders', 'minTotal', 'maxTotal','stateEnum');
     }
 
-    public function cancelOrder($order)
+    public function cancelOrder($order): RedirectResponse
     {
         if ($order->state == StateEnum::Approved->value || $order->state == StateEnum::Cancelled->value) {
             return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
@@ -85,7 +88,7 @@ class OrderService
         return redirect()->back()->with('success', 'Заказ успешно отменен');
     }
 
-    public function updateOrderState(OrderRequest $request, $order)
+    public function updateOrderState(OrderRequest $request, $order): RedirectResponse
     {
         $oldState = $order->state;
         $newState = $request->state_change;
@@ -118,6 +121,6 @@ class OrderService
         $order->state = $newState;
         $order->save();
 
-        return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
+            return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
     }
 }

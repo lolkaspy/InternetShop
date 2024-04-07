@@ -8,9 +8,9 @@
         <hr>
         @if($orderList->first() !== null)
         <h1>Позиции заказа от {{date_format($orderList->first()->order->created_at,"d.m.Y")}}
-            @if(Auth::check() && Auth::user()->role_id == 1)
+            @admin
                 пользователя {{$orderList->first()->order->user->name}}
-            @endif
+            @endadmin
         </h1>
         <hr>
         <form method="GET" class="row g-3 d-flex justify-content-center"

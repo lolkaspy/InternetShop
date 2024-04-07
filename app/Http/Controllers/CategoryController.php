@@ -7,6 +7,7 @@ use App\Models\Category;
 
 use App\Models\Product;
 use App\Services\Category\CategoryService;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -16,7 +17,7 @@ class CategoryController extends Controller
     {
         $this->categoryService = $categoryService;
     }
-    public function index(CategoryRequest $request, $category)
+    public function index(CategoryRequest $request, $category): Renderable
     {
         $currentCategory = Category::where('slug', $category)->first();
         $productsQuery = Product::query()->where('category_id', $currentCategory->id);

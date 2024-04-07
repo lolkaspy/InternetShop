@@ -46,7 +46,7 @@
 email: admin@a
 пароль: admin
 ```
-
+Для обычного пользователя пароль: password.
 3. Для просмотра всех роутов: ```php artisan route:list``` или ```docker compose run artisan route:list```
 
 4. Все необходимые зависимости для CSS и JS находятся в ```package.json```.
@@ -56,3 +56,5 @@ email: admin@a
 6. Версия Laravel - **10.48.4**
 
 7. Версия Ubuntu - **22.04.4 LTS**
+
+8. Добавлены и зарегистрированы директивы в шаблонах Blade: ```@user @enduser``` и ```@admin @endadmin```

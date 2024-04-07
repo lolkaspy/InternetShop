@@ -2,16 +2,19 @@
 
 namespace App\Services\Product;
 
+use App\Http\Filters\FilterInterface;
 use App\Http\Requests\ProductRequest;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProductService
+class ProductService implements FilterInterface
 {
-    public function addToCart(ProductRequest $request)
+    public function addToCart(ProductRequest $request): RedirectResponse
     {
         $productId = $request->get('product_id');
         $product = Product::find($productId);
@@ -41,30 +44,30 @@ class ProductService
         return redirect()->back()->with('success', 'Товар успешно добавлен в корзину');
     }
 
-    public function applyFilters(Builder $productsQuery, ProductRequest $request)
+    public function applyFilters(Builder $query, FormRequest $request): Builder
     {
         if ($request->filled('name')) {
-            $productsQuery->where('name', 'like', "%{$request->name}%");
+            $query->where('name', 'like', "%{$request->name}%");
         }
 
         if ($request->filled('low_price')) {
-            $productsQuery->where('price', '>=', $request->low_price);
+            $query->where('price', '>=', $request->low_price);
         }
 
         if ($request->filled('high_price')) {
-            $productsQuery->where('price', '<=', $request->high_price);
+            $query->where('price', '<=', $request->high_price);
         }
 
         if ($request->filled('category')) {
-            $productsQuery->whereHas('category', function (Builder $query) use ($request) {
+            $query->whereHas('category', function (Builder $query) use ($request) {
                 $query->where('slug', '=', $request->category);
             });
         }
 
-        return $productsQuery;
+        return $query;
     }
 
-    public function getProductsData(Builder $productsQuery, ProductRequest $request)
+    public function getProductsData(Builder $productsQuery, ProductRequest $request): array
     {
         $minPriceQuery = clone $productsQuery;
         $maxPriceQuery = clone $productsQuery;

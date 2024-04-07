@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            @if(Auth::check() && Auth::user()->role_id == 2)
+            @user
                 @if($product->available_quantity > 0)
                     <form action="{{ route('product.addToCart') }}" method="POST">
                         @csrf
@@ -61,6 +61,6 @@
                     <p>Товар в настоящее время недоступен</p>
                 @endif
 
-            @endif
+            @enduser
         </div>
 @endsection

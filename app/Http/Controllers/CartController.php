@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\OrderList;
 use App\Models\Product;
 use App\Services\Cart\CartService;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,17 +20,17 @@ class CartController extends Controller
     {
         $this->cartService = $cartService;
     }
-    public function index()
+    public function index(): Renderable
     {
         $cart = Cart::query()->where('user_id',Auth::id())->paginate(25);
         return view('order/cart', compact('cart'));
     }
-    public function create(Request $request)
+    public function create(Request $request): RedirectResponse
     {
        return $this->cartService->createOrder($request);
     }
 
-    public function destroy()
+    public function destroy(): RedirectResponse
     {
         $cartItems = Cart::where('user_id', Auth::id());
         $cartItems->forceDelete();

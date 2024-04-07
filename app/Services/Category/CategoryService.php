@@ -2,32 +2,34 @@
 
 namespace App\Services\Category;
 
+use App\Http\Filters\FilterInterface;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class CategoryService
+class CategoryService implements FilterInterface
 {
-    public function applyFilters(Builder $productsQuery, CategoryRequest $request)
+    public function applyFilters(Builder $query, FormRequest $request): Builder
     {
         if ($request->filled('name')) {
-            $productsQuery->where('name', 'like', "%{$request->name}%");
+            $query->where('name', 'like', "%{$request->name}%");
         }
 
         if ($request->filled('low_price')) {
-            $productsQuery->where('price', '>=', $request->low_price);
+            $query->where('price', '>=', $request->low_price);
         }
 
         if ($request->filled('high_price')) {
-            $productsQuery->where('price', '<=', $request->high_price);
+            $query->where('price', '<=', $request->high_price);
         }
 
-        return $productsQuery;
+        return $query;
     }
 
-    public function getCategoryData(Builder $productsQuery, CategoryRequest $request)
+    public function getCategoryData(Builder $productsQuery, CategoryRequest $request): array
     {
         $minPriceQuery = clone $productsQuery;
         $maxPriceQuery = clone $productsQuery;
