@@ -4,9 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-
 class ProductRequest extends FormRequest
 {
     /**
@@ -24,8 +21,8 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
-            return [
-                'name' => 'max:255',
-            ];
+        return [
+            'name' => 'max:255',
+        ];
     }
 }

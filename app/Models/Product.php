@@ -13,8 +13,11 @@ class Product extends Model
     use SoftDeletes;
 
     protected $table = 'products';
+
     protected $fillable = ['name', 'price', 'available_quantity', 'category_id', 'slug'];
+
     protected $hidden = ['deleted_at'];
+
     public $timestamps = false;
 
     public function category(): BelongsTo

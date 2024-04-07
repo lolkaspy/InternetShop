@@ -5,11 +5,9 @@ namespace App\Services\Order;
 use App\Enums\StateEnum;
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderRequest;
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class OrderService implements FilterInterface
 {
@@ -62,7 +60,7 @@ class OrderService implements FilterInterface
 
         $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(50);
 
-        return compact('orders', 'minTotal', 'maxTotal','stateEnum');
+        return compact('orders', 'minTotal', 'maxTotal', 'stateEnum');
     }
 
     public function cancelOrder($order): RedirectResponse
@@ -121,6 +119,6 @@ class OrderService implements FilterInterface
         $order->state = $newState;
         $order->save();
 
-            return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
+        return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
     }
 }

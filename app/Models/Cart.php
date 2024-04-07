@@ -13,7 +13,9 @@ class Cart extends Model
     use SoftDeletes;
 
     protected $table = 'carts';
+
     protected $fillable = ['user_id', 'product_id', 'quantity'];
+
     public $timestamps = false;
 
     public function user(): BelongsTo
@@ -25,5 +27,4 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class);
     }
-
 }

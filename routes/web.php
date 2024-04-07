@@ -1,8 +1,5 @@
 <?php
 
-
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,12 +11,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 //роуты для категорий
-include('CategoryRoute/CategoryRoute.php');
+include 'CategoryRoute/CategoryRoute.php';
 //роуты для товаров
-include('ProductRoute/ProductRoute.php');
+include 'ProductRoute/ProductRoute.php';
 //роуты для заказов
-include('OrderRoute/OrderRoute.php');
+include 'OrderRoute/OrderRoute.php';
 //мейн роуты для магазина в целом
-include('ShopRoute/ShopRoute.php');
+include 'ShopRoute/ShopRoute.php';

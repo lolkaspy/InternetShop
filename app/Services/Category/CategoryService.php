@@ -4,11 +4,8 @@ namespace App\Services\Category;
 
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\CategoryRequest;
-use App\Models\Category;
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class CategoryService implements FilterInterface
 {
@@ -44,6 +41,4 @@ class CategoryService implements FilterInterface
 
         return compact('products', 'minPrice', 'maxPrice');
     }
-
-
 }

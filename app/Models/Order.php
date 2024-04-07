@@ -14,6 +14,7 @@ class Order extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'orders';
+
     protected $fillable = ['id', 'user_id', 'state', 'total', 'created_at', 'updated_at'];
 
     public function products(): BelongsToMany

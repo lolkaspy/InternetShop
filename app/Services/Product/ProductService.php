@@ -9,7 +9,6 @@ use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductService implements FilterInterface
@@ -82,5 +81,4 @@ class ProductService implements FilterInterface
 
         return compact('products', 'productsQuery', 'minPrice', 'maxPrice');
     }
-
 }

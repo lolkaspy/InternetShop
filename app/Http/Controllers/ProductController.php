@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -22,15 +17,16 @@ class ProductController extends Controller
     {
         $this->productService = $productService;
     }
+
     public function index(ProductRequest $request): Renderable
     {
         $categories = Category::all();
         $productsQuery = Product::query();
 
-        $this->productService->applyFilters($productsQuery,$request);
+        $this->productService->applyFilters($productsQuery, $request);
 
         return view('products/products', compact('categories'),
-            $this->productService->getProductsData($productsQuery,$request));
+            $this->productService->getProductsData($productsQuery, $request));
     }
 
     public function show(Product $product): Renderable

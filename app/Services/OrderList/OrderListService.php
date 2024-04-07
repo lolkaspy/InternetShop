@@ -4,10 +4,8 @@ namespace App\Services\OrderList;
 
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderListRequest;
-use App\Models\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 class OrderListService implements FilterInterface
 {
@@ -26,6 +24,7 @@ class OrderListService implements FilterInterface
         if ($request->filled('high_subtotal')) {
             $query->where('subtotal', '<=', $request->high_subtotal);
         }
+
         return $query;
     }
 
@@ -41,8 +40,7 @@ class OrderListService implements FilterInterface
         $sortOrder = $request->get('sort_order', 'asc');
 
         $orderList = $orderListQuery->orderBy($sortBy, $sortOrder)->paginate(25);
+
         return compact('orderList', 'minSubtotal', 'maxSubtotal');
     }
-
-
 }

@@ -7,7 +7,7 @@ use App\Http\Controllers\OrderListController;
 use Illuminate\Support\Facades\Route;
 
 //Order
-Route::get('/admin/orders', [AdminController::class,'index'])->name('orders')
+Route::get('/admin/orders', [AdminController::class, 'index'])->name('orders')
     ->middleware('admin');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::get('/orders/{order_id}', [OrderListController::class, 'show'])
@@ -26,4 +26,3 @@ Route::post('/create', [CartController::class, 'create'])
 Route::delete('/destroy', [CartController::class, 'destroy'])
     ->name('cart.destroy')
     ->middleware('user');
-

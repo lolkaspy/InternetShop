@@ -4,9 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-
 class OrderRequest extends FormRequest
 {
     /**
@@ -29,8 +26,7 @@ class OrderRequest extends FormRequest
                 'user' => 'max:255',
                 'name' => 'max:255',
             ];
-        }
-        else {
+        } else {
             return [
                 'name' => 'max:255',
             ];

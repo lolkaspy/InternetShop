@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Request;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('endadmin', function ($expression) {
-            return "<?php endif; ?>";
+            return '<?php endif; ?>';
         });
 
         Blade::directive('user', function ($expression) {
@@ -37,9 +35,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('enduser', function ($expression) {
-            return "<?php endif; ?>";
+            return '<?php endif; ?>';
         });
-
 
         Paginator::useBootstrap();
 

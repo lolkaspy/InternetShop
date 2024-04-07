@@ -12,13 +12,14 @@ class CheckAdmin
     /**
      * Handle an incoming request.
      *
-     * @param Closure(Request): (Response) $next
+     * @param  Closure(Request): (Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && $request->user()->role_id == 1) {
             return $next($request);
         }
+
         return response()->view('errors.401', [], 401);
     }
 }

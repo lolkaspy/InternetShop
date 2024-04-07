@@ -15,11 +15,11 @@ class ProductFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     public function definition(): array
     {
-        $name = "Товар".fake()->unique()->randomNumber(6).fake()->regexify('[A-Za-z]{5}');
+        $name = 'Товар'.fake()->unique()->randomNumber(6).fake()->regexify('[A-Za-z]{5}');
         $slug = str_slug($name);
+
         return [
             'name' => $name,
             'price' => round(fake()->randomFloat(2, 2000, 50000)),
