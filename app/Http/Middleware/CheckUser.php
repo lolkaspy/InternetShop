@@ -16,7 +16,7 @@ class CheckUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && $request->user()->role_id == 2) {
+        if (Auth::check() && $request->user()->role->name == 'Пользователь') {
             return $next($request);
         }
 
