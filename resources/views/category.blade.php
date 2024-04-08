@@ -12,12 +12,12 @@
             <div class="col-sm-2">
                 <label for="low_price" class="label-14pt">Цена от</label>
                 <input id="low_price" name="low_price" type="number" min="0" class="form-control"
-                       value="{{request()->low_price}}" placeholder="{{$minPrice}}"/>
+                       value="{{request()->low_price}}" placeholder="{{$minLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="high_price" class="label-14pt">до</label>
                 <input id="high_price" name="high_price" type="number" min="0" class="form-control"
-                       value="{{request()->high_price}}" placeholder="{{$maxPrice}}"/>
+                       value="{{request()->high_price}}" placeholder="{{$maxLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="sort_by" class="label-14pt">Сортировка</label>

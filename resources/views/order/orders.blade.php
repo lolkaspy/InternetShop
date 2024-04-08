@@ -28,12 +28,12 @@
             <div class="col-sm-2">
                 <label for="low_total" class="label-14pt">Сумма от</label>
                 <input id="low_total" name="low_total" type="number" min="0" class="form-control"
-                       value="{{request()->low_total}}" placeholder="{{$minTotal}}"/>
+                       value="{{request()->low_total}}" placeholder="{{$minLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="high_total" class="label-14pt">до</label>
                 <input id="high_total" name="high_total" type="number" min="0" class="form-control"
-                       value="{{request()->high_total}}" placeholder="{{$maxTotal}}"/>
+                       value="{{request()->high_total}}" placeholder="{{$maxLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="created_at" class="label-14pt">Дата</label>

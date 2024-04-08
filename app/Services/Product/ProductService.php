@@ -2,6 +2,8 @@
 
 namespace App\Services\Product;
 
+use App\Actions\PriceLimiterAction;
+use App\Actions\SortAction;
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\ProductRequest;
 use App\Models\Cart;
@@ -21,25 +23,24 @@ class ProductService implements FilterInterface
 
         $cart = Cart::where('product_id', $productId)->where('user_id', Auth::id())->first();
 
-
-
         if ($cart) {
             if ($cart->quantity < $product->available_quantity) {
-                DB::transaction(function () use ($product, $cart, $request): void {
-                $cart->quantity += 1;
-                $cart->save();
+                DB::transaction(function () use ($cart): void {
+                    $cart->quantity += 1;
+                    $cart->save();
                 });
             } else {
                 return redirect()->back()->with('error', 'Вы не можете добавить больше этого товара в корзину');
             }
         } else {
             if ($product->available_quantity > 0) {
-                DB::transaction(function () use ($productId, $request): void {
-                Cart::create([
-                    'product_id' => $productId,
-                    'user_id' => Auth::id(),
-                    'quantity' => 1,
-                ]);});
+                DB::transaction(function () use ($productId): void {
+                    Cart::create([
+                        'product_id' => $productId,
+                        'user_id' => Auth::id(),
+                        'quantity' => 1,
+                    ]);
+                });
             } else {
                 return redirect()->back()->with('error', 'Этот товар в настоящее время недоступен');
             }
@@ -73,17 +74,11 @@ class ProductService implements FilterInterface
 
     public function getProductsData(Builder $productsQuery, ProductRequest $request): array
     {
-        $minPriceQuery = clone $productsQuery;
-        $maxPriceQuery = clone $productsQuery;
+        $minLimit = PriceLimiterAction::getMinLimit($productsQuery, 'price');
+        $maxLimit = PriceLimiterAction::getMaxLimit($productsQuery, 'price');
 
-        $minPrice = round($minPriceQuery->min('price'));
-        $maxPrice = round($maxPriceQuery->max('price'));
+        $products = SortAction::sort($productsQuery, $request)->paginate(50);
 
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'asc');
-
-        $products = $productsQuery->orderBy($sortBy, $sortOrder)->paginate(50);
-
-        return compact('products', 'productsQuery', 'minPrice', 'maxPrice');
+        return compact('products', 'productsQuery', 'minLimit', 'maxLimit');
     }
 }

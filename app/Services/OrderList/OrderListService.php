@@ -2,6 +2,8 @@
 
 namespace App\Services\OrderList;
 
+use App\Actions\PriceLimiterAction;
+use App\Actions\SortAction;
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderListRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,17 +32,11 @@ class OrderListService implements FilterInterface
 
     public function getOrderListData(Builder $orderListQuery, OrderListRequest $request): array
     {
-        $minOrderListQuery = clone $orderListQuery;
-        $maxOrderListQuery = clone $orderListQuery;
+        $minLimit = PriceLimiterAction::getMinLimit($orderListQuery, 'subtotal');
+        $maxLimit = PriceLimiterAction::getMaxLimit($orderListQuery, 'subtotal');
 
-        $minSubtotal = round($minOrderListQuery->min('subtotal'));
-        $maxSubtotal = round($maxOrderListQuery->max('subtotal'));
+        $orderList = SortAction::sort($orderListQuery, $request, 'product_id')->paginate(25);
 
-        $sortBy = $request->get('sort_by', 'product_id');
-        $sortOrder = $request->get('sort_order', 'asc');
-
-        $orderList = $orderListQuery->orderBy($sortBy, $sortOrder)->paginate(25);
-
-        return compact('orderList', 'minSubtotal', 'maxSubtotal');
+        return compact('orderList', 'minLimit', 'maxLimit');
     }
 }
