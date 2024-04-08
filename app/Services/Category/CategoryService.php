@@ -2,6 +2,8 @@
 
 namespace App\Services\Category;
 
+use App\Actions\PriceLimiterAction;
+use App\Actions\SortAction;
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,19 +28,13 @@ class CategoryService implements FilterInterface
         return $query;
     }
 
-    public function getCategoryData(Builder $productsQuery, CategoryRequest $request): array
+    public function getCategoryData(Builder $categoriesQuery, CategoryRequest $request): array
     {
-        $minPriceQuery = clone $productsQuery;
-        $maxPriceQuery = clone $productsQuery;
+        $minLimit = PriceLimiterAction::getMinLimit($categoriesQuery, 'price');
+        $maxLimit = PriceLimiterAction::getMaxLimit($categoriesQuery, 'price');
 
-        $minPrice = round($minPriceQuery->min('price'));
-        $maxPrice = round($maxPriceQuery->max('price'));
+        $products = SortAction::sort($categoriesQuery, $request)->paginate(50);
 
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'asc');
-
-        $products = $productsQuery->orderBy($sortBy, $sortOrder)->paginate(50);
-
-        return compact('products', 'minPrice', 'maxPrice');
+        return compact('products', 'minLimit', 'maxLimit');
     }
 }

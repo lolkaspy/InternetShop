@@ -22,12 +22,12 @@
             <div class="col-sm-2">
                 <label for="low_subtotal" class="label-14pt">Сумма от</label>
                 <input id="low_subtotal" name="low_subtotal" type="number" min="0" class="form-control"
-                       value="{{request()->low_subtotal}}" placeholder="{{$minSubtotal}}"/>
+                       value="{{request()->low_subtotal}}" placeholder="{{$minLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="high_subtotal" class="label-14pt">до</label>
                 <input id="high_subtotal" name="high_subtotal" type="number" min="0" class="form-control"
-                       value="{{request()->high_subtotal}}" placeholder="{{$maxSubtotal}}"/>
+                       value="{{request()->high_subtotal}}" placeholder="{{$maxLimit}}"/>
             </div>
             <div class="col-sm-2">
                 <label for="sort_by" class="label-14pt">Сортировка</label>

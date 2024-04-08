@@ -2,6 +2,8 @@
 
 namespace App\Services\Order;
 
+use App\Actions\PriceLimiterAction;
+use App\Actions\SortAction;
 use App\Enums\StateEnum;
 use App\Http\Filters\FilterInterface;
 use App\Http\Requests\OrderRequest;
@@ -37,8 +39,8 @@ class OrderService implements FilterInterface
         }
 
         if ($request->filled('user')) {
-            $query->whereHas('user', function (Builder $query) use ($request) {
-                $query->where('email', 'like', "%{$request->user}%")
+            $query->whereHas('user', function (Builder $q) use ($request) {
+                $q->where('email', 'like', "%{$request->user}%")
                     ->orWhere('name', 'like', "%{$request->user}%");
             });
         }
@@ -51,17 +53,12 @@ class OrderService implements FilterInterface
         //передаём перечисление на view
         $stateEnum = StateEnum::class;
 
-        $sortBy = $request->get('sort_by', 'id');
-        $sortOrder = $request->get('sort_order', 'asc');
-        $minTotalQuery = clone $ordersQuery;
-        $maxTotalQuery = clone $ordersQuery;
+        $orders = SortAction::sort($ordersQuery, $request)->paginate(50);
 
-        $minTotal = round($minTotalQuery->min('total'));
-        $maxTotal = round($maxTotalQuery->max('total'));
+        $minLimit = PriceLimiterAction::getMinLimit($ordersQuery, 'total');
+        $maxLimit = PriceLimiterAction::getMaxLimit($ordersQuery, 'total');
 
-        $orders = $ordersQuery->orderBy($sortBy, $sortOrder)->paginate(50);
-
-        return compact('orders', 'minTotal', 'maxTotal', 'stateEnum');
+        return compact('orders', 'stateEnum', 'minLimit', 'maxLimit');
     }
 
     public function cancelOrder($order): RedirectResponse
@@ -70,31 +67,6 @@ class OrderService implements FilterInterface
             return redirect()->back()->with('error', 'Этот заказ уже был обработан и не может быть отменен');
         }
         DB::transaction(function () use ($order): void {
-
-        $user = $order->user;
-        $user->balance += $order->total;
-        $user->save();
-
-        foreach ($order->orderLists as $orderList) {
-            $product = $orderList->product;
-            $product->available_quantity += $orderList->quantity;
-            $product->save();
-        }
-
-        // Обновить статус заказа
-        $order->state = StateEnum::Cancelled->value;
-        $order->save();
-
-        });
-        return redirect()->back()->with('success', 'Заказ успешно отменен');
-    }
-
-    public function updateOrderState(OrderRequest $request, $order): RedirectResponse
-    {
-        $oldState = $order->state;
-        $newState = $request->state_change;
-        DB::transaction(function () use ($oldState, $newState, $order, $request): void {
-        if ($newState == StateEnum::Cancelled->value && $oldState != StateEnum::Cancelled->value) {
 
             $user = $order->user;
             $user->balance += $order->total;
@@ -106,23 +78,50 @@ class OrderService implements FilterInterface
                 $product->save();
             }
 
-        } elseif (($newState == StateEnum::New->value || $newState == StateEnum::Approved->value) && $oldState == StateEnum::Cancelled->value) {
-
-            $user = $order->user;
-            $user->balance -= $order->total;
-            $user->save();
-
-            foreach ($order->orderLists as $orderList) {
-                $product = $orderList->product;
-                $product->available_quantity -= $orderList->quantity;
-                $product->save();
-            }
-        }
-
-        $order->state = $newState;
-        $order->save();
+            // Обновить статус заказа
+            $order->state = StateEnum::Cancelled->value;
+            $order->save();
 
         });
+
+        return redirect()->back()->with('success', 'Заказ успешно отменен');
+    }
+
+    public function updateOrderState(OrderRequest $request, $order): RedirectResponse
+    {
+        $oldState = $order->state;
+        $newState = $request->state_change;
+        DB::transaction(function () use ($oldState, $newState, $order): void {
+            if ($newState == StateEnum::Cancelled->value && $oldState != StateEnum::Cancelled->value) {
+
+                $user = $order->user;
+                $user->balance += $order->total;
+                $user->save();
+
+                foreach ($order->orderLists as $orderList) {
+                    $product = $orderList->product;
+                    $product->available_quantity += $orderList->quantity;
+                    $product->save();
+                }
+
+            } elseif (($newState == StateEnum::New->value || $newState == StateEnum::Approved->value) && $oldState == StateEnum::Cancelled->value) {
+
+                $user = $order->user;
+                $user->balance -= $order->total;
+                $user->save();
+
+                foreach ($order->orderLists as $orderList) {
+                    $product = $orderList->product;
+                    $product->available_quantity -= $orderList->quantity;
+                    $product->save();
+                }
+            }
+
+            $order->state = $newState;
+            $order->save();
+
+        });
+
         return redirect()->back()->with('success', 'Статус заказа успешно обновлен');
     }
 }
